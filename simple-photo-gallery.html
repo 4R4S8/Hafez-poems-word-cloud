@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Simple Photo Gallery</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px 0;
+      }
+      .gallery-item {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+      .gallery-item:hover {
+        transform: scale(1.05);
+      }
+      .gallery-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+      }
+      .modal-content {
+        display: block;
+        max-width: 90%;
+        max-height: 90%;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .close {
+        color: #fff;
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Photo Gallery</h1>
+    <div id="gallery" class="gallery"></div>
+
+    <div id="modal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="modalImage" />
+    </div>
+
+    <script>
+      const galleryImages = [
+        {
+          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
+          alt: "Image 1",
+        },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
+        {
+          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
+          alt: "Image 1",
+        },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
+        {
+          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
+          alt: "Image 1",
+        },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
+        {
+          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
+          alt: "Image 1",
+        },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
+        {
+          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
+          alt: "Image 1",
+        },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
+        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
+        // Add more images here
+      ];
+
+      const gallery = document.getElementById("gallery");
+      const modal = document.getElementById("modal");
+      const modalImage = document.getElementById("modalImage");
+      const closeButton = document.querySelector(".close");
+
+      function createGallery() {
+        galleryImages.forEach((img) => {
+          const galleryItem = document.createElement("div");
+          galleryItem.className = "gallery-item";
+          galleryItem.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+          galleryItem.addEventListener("click", () => openModal(img.src));
+          gallery.appendChild(galleryItem);
+        });
+      }
+
+      function openModal(src) {
+        modal.style.display = "block";
+        modalImage.src = src;
+      }
+
+      function closeModal() {
+        modal.style.display = "none";
+      }
+
+      closeButton.addEventListener("click", closeModal);
+      window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      createGallery();
+    </script>
+  </body>
+</html>
