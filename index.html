@@ -78,46 +78,41 @@
     </div>
 
     <script>
-      const galleryImages = [
-        {
-          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
-          alt: "Image 1",
-        },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
-        {
-          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
-          alt: "Image 1",
-        },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
-        {
-          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
-          alt: "Image 1",
-        },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
-        {
-          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
-          alt: "Image 1",
-        },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
-        {
-          src: "word_clouds/غزل%20شمارهٔ%20۱.png",
-          alt: "Image 1",
-        },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰.png", alt: "Image 2" },
-        { src: "word_clouds/غزل%20شمارهٔ%20۱۰۰.png", alt: "Image 3" },
-        // Add more images here
-      ];
+      // Function to fetch images from the directory
+      async function fetchImagesFromDirectory(directoryPath) {
+        try {
+          const response = await fetch(directoryPath);
+          const data = await response.text();
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(data, "text/html");
+          const links = htmlDoc.querySelectorAll("a");
+
+          const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+          const imagePaths = Array.from(links)
+            .map((link) => link.href)
+            .filter((href) =>
+              imageExtensions.some((ext) => href.toLowerCase().endsWith(ext))
+            );
+
+          return imagePaths.map((path) => ({
+            src: path,
+            alt: path.split("/").pop(), // Use filename as alt text
+          }));
+        } catch (error) {
+          console.error("Error fetching images:", error);
+          return [];
+        }
+      }
 
       const gallery = document.getElementById("gallery");
       const modal = document.getElementById("modal");
       const modalImage = document.getElementById("modalImage");
       const closeButton = document.querySelector(".close");
 
-      function createGallery() {
+      async function createGallery() {
+        const directoryPath = "word_clouds/"; // Update this to your actual directory path
+        const galleryImages = await fetchImagesFromDirectory(directoryPath);
+
         galleryImages.forEach((img) => {
           const galleryItem = document.createElement("div");
           galleryItem.className = "gallery-item";
